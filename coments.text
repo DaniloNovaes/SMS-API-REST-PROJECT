@@ -1,0 +1,58 @@
+PASSO A PASSO
+
+1- npm init -y para iniciar o npm e criar o Package.json
+
+2 - npm i nodemon --save-dev - Para ter o live reload do servidor, apenas na fase de desenvolvimento. 
+
+3 - Em seguida, no Package.json criar um script chamado   "dev": "nodemon .", o ponto se refere ao index.js, portanto, também  poderia ser escrito
+  "dev": "nodemon index.js", . Caso eu quisesse um servidor sem o live reload, seria node .
+
+4 - Instalar o express. Framework que ajuda na construção de rotas, na construção da api - npm i express
+
+5- adicionar no Package.json o "type": "module", para poder trabalhar com import.
+
+6 - importar o express no arquivo index.html  import express  from "express";
+
+7- criar o server. const app = express();
+
+8- Definir a porta do server. const port = 3000;
+
+9- Para estabelecer uma porta dinâmica fazer const PORT = process.env.PORT 
+|| 3000; e em seguida instalar o env no terminal fazendo  npm i dotenv
+
+10- No Package.json adicionar no script dev -r dotenv/config para configurar o env
+ficando o dev da seguinte forma:  "dev": "nodemon -r dotenv/config .", 
+O .env tem que ficar na mesma pasta que o Package.json
+
+11- Para ficar mais profissional, é melhor criar um routes.js para colocar
+as rotas, não concentrar tudo no index.js. Para isso, se importa a funcionalidade
+de rotas presente no express, da seguinte forma: import {Router} from 'express';
+const routes = Router();
+
+12- Estabelecidas as rotas, é preciso exportar para seja possível importar no
+arquivo principal (index.js), da seguinte forma: export {routes} 
+ou export default routes; (quando for uma coisa só).
+
+
+13- Para o servidor utilizar as rotas feitas no outro arquivo, é necessário
+fazer o import: import routes from './routes.js';
+
+Depois, é necessário fazer o servidor (que chamamos de app) usar a rota,
+da seguinte forma:  app.use(routes);
+
+14 - é possível organizar as rotas de forma que não fiquem com funções de callback nelas
+É possível definir as funções de callback através de controllers.
+Criar um diretório controllers. Lá, fazer o arquivo JS e nele fazer as funções de callback.
+Exportar cada função criada da seguinte forma:export { message }; . En seguida,  exportar no arquivo routes,
+da seguinte forma: import * as MessageController from './controllers/message.js'
+Lembrete: Esta é uma forma de exportar TODAS as funções existentes no arquivo controller,
+por isso o *.
+
+Desta forma, ao invés de ficar repetindo as funções de callback iguais, faz-se
+da seguinte forma: routes.post('/message', MessageController.message);
+
+15- para instalar o twilio: npm i twilio
+
+16- No serviço de mensagem, importar o twilio da seguinte forma: import twilio from "twilio";.
+
+17- Após, inicializar o serviço do twilio com as chaves do .env.
